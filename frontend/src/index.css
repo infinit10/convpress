@@ -9,6 +9,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 /* Optional logo styling — remove if unused */
 .logo {
   height: 6em;

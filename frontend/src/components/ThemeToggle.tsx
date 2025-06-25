@@ -1,28 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useThemeSwitcher } from 'react-css-theme-switcher';
 
 export const ThemeToggle: React.FC = () => {
-  const [dark, setDark] = useState(() => {
-    return localStorage.getItem('theme') === 'dark';
-  });
+  const { switcher, themes, currentTheme, status } = useThemeSwitcher();
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    const root = document.body;
-    if (dark) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [dark]);
+    // keep the toggle in sync with currentTheme
+    setIsDarkMode(currentTheme === 'dark');
+  }, [currentTheme]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(previous => {
+      const newTheme = previous ? themes.light : themes.dark;
+      switcher({ theme: newTheme });
+
+      localStorage.setItem('theme', newTheme);
+
+      return !previous;
+    });
+  };
+
+  if (status === 'loading') return <span>Loading theme...</span>;
 
   return (
     <button
-      onClick={() => setDark(!dark)}
-      className="btn btn-sm btn-outline-secondary ms-2"
+      onClick={toggleTheme}
+      className="btn btn-sm ms-2"
+
       title="Toggle theme"
     >
-      {dark ? '🌙 Dark' : '☀️ Light'}
+      {isDarkMode ? '🌙' : '☀️'}
     </button>
   );
 };

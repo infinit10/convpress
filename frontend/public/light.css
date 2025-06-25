@@ -1,0 +1,40 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --muted-color: #6c757d;
+
+  --navbar-bg: #f8f9fa;
+  --navbar-text: #212529;
+
+  --dropzone-bg: #f8f9fa;
+  --dropzone-border: #ced4da;
+  --dropzone-text-hover: #0d6efd;
+  --dropzone-hover-bg: #e9f5ff;
+  --dropzone-border-hover: #0d6efd;
+
+  --backbutton-text: #000000;
+
+  --select-bg: #ffffff;
+  --select-text: #000000;
+  --select-border: #ced4da;
+
+  --card-bg: #ffffff;
+  --card-text: #212529;
+  --card-border: #dee2e6;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --card-hover-bg: #f8f9fa;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-muted-text {
+  color: var(--muted-color);
+}
+
+nav, a {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

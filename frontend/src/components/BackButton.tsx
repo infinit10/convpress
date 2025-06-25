@@ -2,20 +2,22 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface BackButtonProps {
-  to?: string;
+  to: string;
 }
 
-export const BackButton: React.FC<BackButtonProps> = ({ to = '/convert' }) => {
+export const BackButton: React.FC<BackButtonProps> = ({ to }) => {
   const navigate = useNavigate();
   return (
-    <div className="d-flex justify-content-end">
-      <button
-        className="btn btn-link text-decoration-none text-secondary"
-        onClick={() => navigate(to)}
-        style={{ fontSize: '1rem' }}
-      >
-        ← Back
-      </button>
-    </div>
+    <button
+      className="btn btn-secondary btn-sm border-0"
+      style={{
+        backgroundColor: 'var(--theme-bg)',
+        color: 'var(--backbutton-text)',
+        fontSize: '1rem'
+      }}
+      onClick={() => navigate(to)}
+    >
+      ← Back
+    </button>
   );
 };

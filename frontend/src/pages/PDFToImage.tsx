@@ -5,7 +5,7 @@ import { PageContainer } from '../components/PageContainer';
 import { FileDropzone } from '../components/FileDropZone';
 import { BackButton } from '../components/BackButton';
 
-const imageFormats = ['jpg', 'png', 'webp'];
+const imageFormats = ['jpg', 'png'];
 
 export const PDFToImage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -13,6 +13,7 @@ export const PDFToImage: React.FC = () => {
   const [progress, setProgress] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [alertLevel, setAlertLevel] = useState<string>('');
 
   const handleUpload = async () => {
     if (!file) {
@@ -20,6 +21,7 @@ export const PDFToImage: React.FC = () => {
       return;
     }
 
+    setAlertLevel('');
     setIsUploading(true);
     setProgress(0);
     setMessage('');
@@ -46,27 +48,41 @@ export const PDFToImage: React.FC = () => {
       link.remove();
 
       setMessage('✅ PDF converted to image successfully!');
+      setAlertLevel('success');
     } catch (err) {
       console.error(err);
+      setAlertLevel('danger');
       setMessage('❌ Conversion failed.');
     } finally {
       setIsUploading(false);
+      setFile(null);
     }
   };
 
   return (
     <PageContainer>
-      <BackButton />
-      <h2 className="mb-4 text-warning">PDF ➜ Image</h2>
+      <div
+        className="d-flex justify-content-between align-items-center mb-4"
+        style={{ width: "100%" }}
+      >
+        <BackButton to='/convert' />
+        <h2 className="mb-4 text-primary">PDF ➜ Image</h2>
+        <div className="flex-shrink-0" style={{ width: 40 }}></div>
+      </div>
 
-      <FileDropzone onFileSelected={setFile} />
-      {file && <p className="mt-3">Selected file: <strong>{file.name}</strong></p>}
+      {!file && <FileDropzone onFileSelected={setFile} />}
+
+      {file && (
+        <p className="mt-3" style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+          Selected file: <strong>{file.name}</strong>
+        </p>
+      )}
 
       <div className="mt-3">
         <label htmlFor="outputFormat">Select Output Format</label>
         <select
           id="outputFormat"
-          className="form-select"
+          className="theme-select"
           value={outputFormat}
           onChange={(e) => setOutputFormat(e.target.value)}
         >
@@ -76,7 +92,11 @@ export const PDFToImage: React.FC = () => {
         </select>
       </div>
 
-      <button className="btn btn-warning mt-4" onClick={handleUpload} disabled={isUploading}>
+      <button
+        className="btn btn-primary mt-4 border-0"
+        onClick={handleUpload}
+        disabled={isUploading}
+      >
         {isUploading ? 'Uploading...' : 'Convert to Image'}
       </button>
 
@@ -91,8 +111,7 @@ export const PDFToImage: React.FC = () => {
         </div>
       )}
 
-      {message && <div className="alert alert-info mt-4 text-center w-100">{message}</div>}
-      
+      {message && <div className={`alert alert-${alertLevel} mt-4 w-50 text-center`}>{message}</div>}
     </PageContainer>
   );
 };

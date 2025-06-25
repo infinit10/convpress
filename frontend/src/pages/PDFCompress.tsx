@@ -1,7 +1,7 @@
-import { CompressPage } from "../components/CompressComponent";
+import { CompressForm } from "../components/CompressForm";
 
 export const PDFCompress: React.FC = () => (
-  <CompressPage
+  <CompressForm
     title="Compress PDF"
     apiUrl="http://localhost:5000/compress/pdf"
     downloadPrefix="compressed"

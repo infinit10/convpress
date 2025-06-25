@@ -13,6 +13,7 @@ export const ImageToImage: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [message, setMessage] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [alertLevel, setAlertLevel] = useState<string>('');
 
   const handleUpload = async () => {
     if (!file) {
@@ -20,6 +21,7 @@ export const ImageToImage: React.FC = () => {
       return;
     }
 
+    setAlertLevel('');
     setIsUploading(true);
     setProgress(0);
     setMessage('');
@@ -44,44 +46,88 @@ export const ImageToImage: React.FC = () => {
       link.click();
       link.remove();
 
+      setAlertLevel('success');
       setMessage('✅ Image converted and downloaded!');
     } catch (err) {
       console.error(err);
+      setAlertLevel('danger');
       setMessage('❌ Conversion failed.');
     } finally {
       setIsUploading(false);
+      setFile(null);
     }
   };
 
   return (
     <PageContainer>
-      <BackButton />
-      <h2 className="mb-4 text-primary">Image ➜ Image</h2>
-      <FileDropzone onFileSelected={setFile} />
-      {file && <p className="mt-3">Selected file: <strong>{file.name}</strong></p>}
+      <div
+        className="d-flex justify-content-between align-items-center mb-4"
+        style={{ width: "100%" }}
+      >
+        <BackButton to='/convert' />
+        <h2 className="mb-4 text-primary">Image ➜ Image</h2>
+        <div className="flex-shrink-0" style={{ width: 40 }}></div>
+      </div>
+      
+      {!file && <FileDropzone onFileSelected={setFile} />}
+
+      {file && (
+        <div className="mt-3 d-flex flex-column align-items-center">
+          <p className="mt-3" style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+            Selected file: <strong>{file.name}</strong>
+          </p>
+          {file.type.startsWith('image/') && (
+            <img
+              src={URL.createObjectURL(file)}
+              alt="Preview"
+              style={{
+                maxWidth: '300px',
+                maxHeight: '200px',
+                marginTop: '10px',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}
+              onLoad={(e) =>
+                URL.revokeObjectURL((e.target as HTMLImageElement).src)
+              }
+            />
+          )}
+        </div>
+      )}
 
       <div className="mt-3 w-100" style={{ maxWidth: '400px' }}>
-        <label>Output Format</label>
-        <select className="form-select" value={outputFormat} onChange={(e) => setOutputFormat(e.target.value)}>
+        <label className="mb-2 fw-semibold">Output Format</label>
+        <select
+          className="theme-select"
+          value={outputFormat}
+          onChange={(e) => setOutputFormat(e.target.value)}
+        >
           {imageFormats.map(fmt => (
             <option key={fmt} value={fmt}>{fmt.toUpperCase()}</option>
           ))}
         </select>
       </div>
 
-      <button className="btn btn-primary mt-4" onClick={handleUpload} disabled={isUploading}>
+      <button
+        className="btn btn-primary mt-4 border-0"
+        onClick={handleUpload}
+        disabled={isUploading}
+      >
         {isUploading ? 'Uploading...' : 'Convert'}
       </button>
 
       {isUploading && (
-        <div className="progress w-100 mt-3" style={{ maxWidth: '400px' }}>
-          <div className="progress-bar progress-bar-striped progress-bar-animated bg-success" style={{ width: `${progress}%` }}>
+        <div className="progress w-100 mt-3" style={{ maxWidth: "400px" }}>
+          <div
+            className="progress-bar progress-bar-striped progress-bar-animated bg-info"
+            style={{ width: `${progress}%` }}
+          >
             {progress}%
           </div>
         </div>
       )}
 
-      {message && <div className="alert alert-info mt-4 w-100 text-center">{message}</div>}
+      {message && <div className={`alert alert-${alertLevel} mt-4 w-50 text-center`}>{message}</div>}
     </PageContainer>
   );
 };
