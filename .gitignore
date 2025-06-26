@@ -66,6 +66,7 @@ venv.bak/
 # Flask env files
 instance/
 .webassets-cache
+.ruff_cache
 
 # Editor directories and files
 .vscode/*
