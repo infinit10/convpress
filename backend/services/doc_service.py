@@ -1,7 +1,9 @@
 import fitz # PyMuPDF
 import zipfile
 from io import BytesIO
-import tempfile, os, subprocess
+import tempfile
+import os
+import subprocess
 
 quality_mapping = {
   'low': '/screen',
