@@ -4,6 +4,7 @@ import axios from 'axios';
 import { PageContainer } from '../components/PageContainer';
 import { FileDropzone } from '../components/FileDropZone';
 import { BackButton } from '../components/BackButton';
+import { API_BASE } from '../config';
 
 type AlertVariant = '' | 'success' | 'error';
 
@@ -29,7 +30,7 @@ export const ImageToPDF: React.FC = () => {
     formData.append('file', file);
 
     try {
-      const res = await axios.post('http://localhost:5000/convert/img2pdf', formData, {
+      const res = await axios.post(`${API_BASE}/convert/img2pdf`, formData, {
         responseType: 'blob',
         onUploadProgress: (e) => {
           setProgress(Math.round((e.loaded * 100) / (e.total || 1)));

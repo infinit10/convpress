@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FileDropzone } from '../components/FileDropZone';
 import { BackButton } from '../components/BackButton';
 import { PageContainer } from '../components/PageContainer';
+import { API_BASE } from '../config';
 
 const imageFormats = ['jpg', 'png'];
 
@@ -33,7 +34,7 @@ export const ImageToImage: React.FC = () => {
     formData.append('outputFormat', outputFormat);
 
     try {
-      const res = await axios.post('http://localhost:5000/convert/img2img', formData, {
+      const res = await axios.post(`${API_BASE}/convert/img2img`, formData, {
         responseType: 'blob',
         onUploadProgress: (e) => {
           setProgress(Math.round((e.loaded * 100) / (e.total || 1)));
