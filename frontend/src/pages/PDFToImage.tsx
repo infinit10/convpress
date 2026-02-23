@@ -7,13 +7,15 @@ import { BackButton } from '../components/BackButton';
 
 const imageFormats = ['jpg', 'png'];
 
+type AlertVariant = '' | 'success' | 'error';
+
 export const PDFToImage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [outputFormat, setOutputFormat] = useState<string>('jpg');
   const [progress, setProgress] = useState<number>(0);
   const [message, setMessage] = useState<string>('');
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [alertLevel, setAlertLevel] = useState<string>('');
+  const [alertVariant, setAlertVariant] = useState<AlertVariant>('');
 
   const handleUpload = async () => {
     if (!file) {
@@ -21,7 +23,7 @@ export const PDFToImage: React.FC = () => {
       return;
     }
 
-    setAlertLevel('');
+    setAlertVariant('');
     setIsUploading(true);
     setProgress(0);
     setMessage('');
@@ -47,12 +49,12 @@ export const PDFToImage: React.FC = () => {
       link.click();
       link.remove();
 
-      setMessage('✅ PDF converted to image successfully!');
-      setAlertLevel('success');
+      setMessage('PDF converted to image successfully!');
+      setAlertVariant('success');
     } catch (err) {
       console.error(err);
-      setAlertLevel('danger');
-      setMessage('❌ Conversion failed.');
+      setAlertVariant('error');
+      setMessage('Conversion failed.');
     } finally {
       setIsUploading(false);
       setFile(null);
@@ -61,39 +63,36 @@ export const PDFToImage: React.FC = () => {
 
   return (
     <PageContainer>
-      <div
-        className="d-flex justify-content-between align-items-center mb-4"
-        style={{ width: "100%" }}
-      >
+      <div className="page-header">
         <BackButton to='/convert' />
-        <h2 className="mb-4 text-primary">PDF ➜ Image</h2>
-        <div className="flex-shrink-0" style={{ width: 40 }}></div>
+        <h2>PDF ➜ Image</h2>
       </div>
 
       {!file && <FileDropzone onFileSelected={setFile} />}
 
       {file && (
-        <p className="mt-3" style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+        <p className="mt-4" style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
           Selected file: <strong>{file.name}</strong>
         </p>
       )}
 
-      <div className="mt-3">
-        <label htmlFor="outputFormat">Select Output Format</label>
-        <select
-          id="outputFormat"
-          className="theme-select"
-          value={outputFormat}
-          onChange={(e) => setOutputFormat(e.target.value)}
-        >
-          {imageFormats.map(fmt => (
-            <option key={fmt} value={fmt}>{fmt.toUpperCase()}</option>
-          ))}
-        </select>
+      <div className="vstack mt-4 w-100" style={{ maxWidth: '400px' }}>
+        <div data-field="">
+          <label htmlFor="outputFormat">Select Output Format</label>
+          <select
+            id="outputFormat"
+            value={outputFormat}
+            onChange={(e) => setOutputFormat(e.target.value)}
+          >
+            {imageFormats.map(fmt => (
+              <option key={fmt} value={fmt}>{fmt.toUpperCase()}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <button
-        className="btn btn-primary mt-4 border-0"
+        className="mt-4"
         onClick={handleUpload}
         disabled={isUploading}
       >
@@ -101,17 +100,14 @@ export const PDFToImage: React.FC = () => {
       </button>
 
       {isUploading && (
-        <div className="progress w-100 mt-3">
-          <div
-            className="progress-bar progress-bar-striped progress-bar-animated bg-warning"
-            style={{ width: `${progress}%` }}
-          >
-            {progress}%
-          </div>
-        </div>
+        <progress className="w-100 mt-4" value={progress} max="100" style={{ maxWidth: "400px" }} />
       )}
 
-      {message && <div className={`alert alert-${alertLevel} mt-4 w-50 text-center`}>{message}</div>}
+      {message && (
+        <div role="alert" data-variant={alertVariant} className="mt-4 text-center" style={{ maxWidth: '50%' }}>
+          {message}
+        </div>
+      )}
     </PageContainer>
   );
 };

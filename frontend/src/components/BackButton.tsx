@@ -9,12 +9,8 @@ export const BackButton: React.FC<BackButtonProps> = ({ to }) => {
   const navigate = useNavigate();
   return (
     <button
-      className="btn btn-secondary btn-sm border-0"
-      style={{
-        backgroundColor: 'var(--theme-bg)',
-        color: 'var(--backbutton-text)',
-        fontSize: '1rem'
-      }}
+      className="small outline"
+      style={{ color: 'var(--foreground)', borderColor: 'var(--foreground)' }}
       onClick={() => navigate(to)}
     >
       ← Back

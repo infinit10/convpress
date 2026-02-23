@@ -6,7 +6,7 @@ interface Props {
 
 export const PageContainer: React.FC<Props> = ({ children }) => {
   return (
-    <div className="container-fluid d-flex flex-column align-items-center justify-content-start py-5 px-3 w-100">
+    <div className="vstack items-center w-100" style={{ padding: '3rem 1rem' }}>
       {children}
     </div>
   );

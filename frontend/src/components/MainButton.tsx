@@ -4,12 +4,9 @@ export const MainButton: React.FC<{
   onClick: () => void;
   children: React.ReactNode;
   className?: string;
-}> = ({ onClick, children }) => {
+}> = ({ onClick, children, className = '' }) => {
   return (
-    <button
-      className="btn btn-primary btn-lg border-0"
-      onClick={onClick}
-    >
+    <button className={`large w-100 ${className}`} onClick={onClick}>
       {children}
     </button>
   );

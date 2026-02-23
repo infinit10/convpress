@@ -17,25 +17,21 @@ export const FileDropzone: React.FC<Props> = ({ onFileSelected }) => {
   return (
     <div
       {...getRootProps()}
-      className="theme-dropzone border-2 border-dashed p-5 text-center rounded mt-3 w-50"
+      className="app-dropzone text-center mt-4"
       style={{
-        backgroundColor: isDragActive
-          ? 'var(--dropzone-hover-bg)'
-          : 'var(--dropzone-bg)',
-        borderColor: isDragActive
-          ? 'var(--dropzone-border-hover)'
-          : 'var(--dropzone-border)',
+        border: `2px dashed ${isDragActive ? 'var(--primary)' : 'var(--dropzone-border)'}`,
+        padding: '3rem',
+        borderRadius: 'var(--radius-large)',
+        width: '50%',
+        backgroundColor: isDragActive ? 'var(--dropzone-hover-bg)' : 'var(--dropzone-bg)',
         cursor: 'pointer',
-        transition: 'all 0.3s ease',
       }}
     >
       <input {...getInputProps()} />
       {isDragActive ? (
-        <p className="fw-semibold" style={{ color: 'var(--dropzone-text-hover)' }}>
-          Drop the file here ...
-        </p>
+        <p><strong>Drop the file here ...</strong></p>
       ) : (
-        <p className="theme-muted-text">Drag and drop a file here, or click to select one</p>
+        <p className="text-light">Drag and drop a file here, or click to select one</p>
       )}
     </div>
   );

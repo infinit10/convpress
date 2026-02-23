@@ -11,6 +11,8 @@ type CompressFormProps = {
   downloadPrefix: string;
 };
 
+type AlertVariant = '' | 'success' | 'warning' | 'error';
+
 export const CompressForm: React.FC<CompressFormProps> = ({
   title,
   apiUrl,
@@ -21,16 +23,16 @@ export const CompressForm: React.FC<CompressFormProps> = ({
   const [progress, setProgress] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [alertLevel, setAlertLevel] = useState<string>("");
+  const [alertVariant, setAlertVariant] = useState<AlertVariant>('');
 
   const handleCompress = async () => {
     if (!file) {
       setMessage("Please select a file.");
-      setAlertLevel("warning");
+      setAlertVariant("warning");
       return;
     }
 
-    setAlertLevel("");
+    setAlertVariant('');
     setIsUploading(true);
     setProgress(0);
     setMessage("");
@@ -56,11 +58,11 @@ export const CompressForm: React.FC<CompressFormProps> = ({
       link.remove();
 
       setMessage("✅ Compression complete.");
-      setAlertLevel("success");
+      setAlertVariant("success");
     } catch (err) {
       console.error(err);
       setMessage("❌ Compression failed.");
-      setAlertLevel("danger");
+      setAlertVariant("error");
     } finally {
       setIsUploading(false);
       setFile(null);
@@ -69,20 +71,16 @@ export const CompressForm: React.FC<CompressFormProps> = ({
 
   return (
     <PageContainer>
-      <div
-        className="d-flex justify-content-between align-items-center mb-4"
-        style={{ width: "100%" }}
-      >
+      <div className="page-header">
         <BackButton to="/compress" />
-        <h2 className="mb-0 text-primary">{title}</h2>
-        <div className="flex-shrink-0" style={{ width: 40 }}></div>
+        <h2>{title}</h2>
       </div>
 
       {!file && <FileDropzone onFileSelected={setFile} />}
 
       {file && (
-        <div className="mt-3 d-flex flex-column align-items-center">
-          <p className="mt-3" style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
+        <div className="vstack items-center mt-4">
+          <p style={{ wordBreak: 'break-all', whiteSpace: 'pre-wrap' }}>
             Selected file: <strong>{file.name}</strong>
           </p>
           {file.type.startsWith("image/") && (
@@ -93,8 +91,8 @@ export const CompressForm: React.FC<CompressFormProps> = ({
                 maxWidth: "300px",
                 maxHeight: "200px",
                 marginTop: "10px",
-                borderRadius: "8px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                borderRadius: "var(--radius-medium)",
+                boxShadow: "var(--shadow-medium)",
               }}
               onLoad={(e) =>
                 URL.revokeObjectURL((e.target as HTMLImageElement).src)
@@ -104,23 +102,24 @@ export const CompressForm: React.FC<CompressFormProps> = ({
         </div>
       )}
 
-      <div className="mt-3 w-100" style={{ maxWidth: "400px" }}>
-        <label className="mb-2 fw-semibold">Quality</label>
-        <select
-          className="theme-select"
-          value={quality}
-          onChange={(e) => setQuality(e.target.value)}
-        >
-          {["low", "medium", "high"].map((q) => (
-            <option key={q} value={q}>
-              {q.charAt(0).toUpperCase() + q.slice(1)}
-            </option>
-          ))}
-        </select>
+      <div className="vstack mt-4 w-100" style={{ maxWidth: "400px" }}>
+        <div data-field="">
+          <label>Quality</label>
+          <select
+            value={quality}
+            onChange={(e) => setQuality(e.target.value)}
+          >
+            {["low", "medium", "high"].map((q) => (
+              <option key={q} value={q}>
+                {q.charAt(0).toUpperCase() + q.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <button
-        className="btn btn-primary mt-4 border-0"
+        className="mt-4"
         onClick={handleCompress}
         disabled={isUploading}
       >
@@ -128,18 +127,11 @@ export const CompressForm: React.FC<CompressFormProps> = ({
       </button>
 
       {isUploading && (
-        <div className="progress w-100 mt-3" style={{ maxWidth: "400px" }}>
-          <div
-            className="progress-bar progress-bar-striped progress-bar-animated bg-info"
-            style={{ width: `${progress}%` }}
-          >
-            {progress}%
-          </div>
-        </div>
+        <progress className="w-100 mt-4" value={progress} max="100" style={{ maxWidth: "400px" }} />
       )}
 
       {message && (
-        <div className={`alert alert-${alertLevel} mt-4 w-50 text-center`}>
+        <div role="alert" data-variant={alertVariant} className="mt-4 text-center" style={{ maxWidth: '50%' }}>
           {message}
         </div>
       )}

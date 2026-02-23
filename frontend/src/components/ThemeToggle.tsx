@@ -1,36 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useThemeSwitcher } from 'react-css-theme-switcher';
 
 export const ThemeToggle: React.FC = () => {
-  const { switcher, themes, currentTheme, status } = useThemeSwitcher();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
 
   useEffect(() => {
-    // keep the toggle in sync with currentTheme
-    setIsDarkMode(currentTheme === 'dark');
-  }, [currentTheme]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(previous => {
-      const newTheme = previous ? themes.light : themes.dark;
-      switcher({ theme: newTheme });
-
-      localStorage.setItem('theme', newTheme);
-
-      return !previous;
-    });
-  };
-
-  if (status === 'loading') return <span>Loading theme...</span>;
+    document.documentElement.style.colorScheme = isDarkMode ? 'dark' : 'light';
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode]);
 
   return (
-    <button
-      onClick={toggleTheme}
-      className="btn btn-sm ms-2"
-
-      title="Toggle theme"
-    >
-      {isDarkMode ? '🌙' : '☀️'}
-    </button>
+    <div className="theme-toggle" onClick={() => setIsDarkMode(prev => !prev)} role="switch" aria-checked={isDarkMode} tabIndex={0}>
+      <div className="theme-toggle-slider" style={{ left: isDarkMode ? '50%' : '0' }} />
+      <span className={`theme-toggle-label ${!isDarkMode ? 'active' : ''}`}>Light</span>
+      <span className={`theme-toggle-label ${isDarkMode ? 'active' : ''}`}>Dark</span>
+    </div>
   );
 };

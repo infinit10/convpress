@@ -1,64 +1,69 @@
-.theme-navbar {
-  background-color: var(--navbar-bg);
-  color: var(--navbar-text);
+.app-navbar {
+  border-bottom: 1px solid var(--border);
 }
 
-.theme-navbar a {
-  color: var(--navbar-link);
+.app-card {
+  transition: transform var(--transition), box-shadow var(--transition);
 }
 
-.btn-primary {
-  background-color: Teal !important;
-}
-.btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary:focus {
-  background-color: rgb(86, 180, 180) !important;
-}
-
-.card .read-more:hover{
-  font-size: 14px;
-}
-
-.card:hover{
-  box-shadow: 8px 8px 8px blue;
-  transform:scale(1.1);
-}
-
-.card{
-  height:150px;
-  width:150px;
-  border:1px solid black;
-  transition:.3s;
-  margin: 3rem;
-}
-
-.theme-select {
-  background-color: var(--select-bg);
-  color: var(--select-text);
-  border: 1px solid var(--select-border);
-  border-radius: 4px;
-  padding: 0.5rem;
-  width: 100%;
-  transition: all 0.3s ease;
-}
-
-.theme-select:focus {
-  outline: none;
-  border-color: var(--select-border);
-  box-shadow: 0 0 0 2px rgba(100, 150, 250, 0.25);
-}
-
-.theme-card {
-  background-color: var(--card-bg);
-  color: var(--card-text);
-  border: 1px solid var(--card-border);
-  box-shadow: 0 4px 8px var(--card-shadow);
-  transition: all 0.3s ease;
-  border-radius: 8px;
-  cursor: pointer
-}
-
-.theme-card:hover {
-  background-color: var(--card-hover-bg);
+.app-card:hover {
   transform: translateY(-2px);
+  box-shadow: var(--shadow-large);
+}
+
+.app-dropzone {
+  transition: all var(--transition);
+}
+
+.theme-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 120px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  background: var(--secondary);
   cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+}
+
+.theme-toggle-slider {
+  position: absolute;
+  top: 3px;
+  width: calc(50% - 3px);
+  height: calc(100% - 6px);
+  border-radius: var(--radius-full);
+  background: var(--foreground);
+  transition: left 0.25s ease;
+  pointer-events: none;
+}
+
+.theme-toggle-label {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  text-align: center;
+  font-size: var(--text-8);
+  font-weight: var(--font-medium);
+  color: var(--muted-foreground);
+  transition: color 0.25s ease;
+  pointer-events: none;
+  line-height: 34px;
+}
+
+.theme-toggle-label.active {
+  color: var(--background);
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+
+.page-header h2 {
+  margin: 0;
 }
