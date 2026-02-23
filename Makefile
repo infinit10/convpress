@@ -7,7 +7,7 @@ help:
 	@echo "Available targets:"
 	@echo "  dev              Run Vite and Flask dev server"
 	@echo "  build            Build Docker image for production"
-	@echo "  build-web        Build and deploy frontend to Cloudflare Pages"
+	@echo "  build-and-deploy-web        Build frontend for production and deploy to Cloudflare Pages"
 	@echo "  clean            Remove Docker images"
 	@echo "  ts_lint          Run TypeScript linter"
 	@echo "  py_lint          Run Python linter"
@@ -20,8 +20,8 @@ dev:
 build:
 	docker compose build
 
-build-web:
-	cd frontend && npm install && npm run deploy
+build-and-deploy-web:
+	cd frontend && npm run build && npm run deploy
 
 clean:
 	docker image rm convpress-frontend:latest convpress-backend:latest || true
