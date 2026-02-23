@@ -31,10 +31,9 @@ export const PDFToImage: React.FC = () => {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('outputFormat', outputFormat);
 
     try {
-      const res = await axios.post(`${API_BASE}/convert/pdf2img`, formData, {
+      const res = await axios.post(`${API_BASE}/convert/pdf2img?format=${outputFormat}`, formData, {
         responseType: 'blob',
         onUploadProgress: (e) => {
           setProgress(Math.round((e.loaded * 100) / (e.total || 1)));

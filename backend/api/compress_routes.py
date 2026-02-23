@@ -1,6 +1,7 @@
 from flask import Blueprint, request, send_file, current_app
 import os
 
+from api import handle_server_error
 from services import image_service
 from services import doc_service
 
@@ -39,7 +40,7 @@ def compress_image():
       download_name=new_filename
     )
   except Exception as e:
-    return { 'error': f'Error while compressing file - {e}' }, 500
+    return handle_server_error('Error while compressing file', e)
   
 @router.post('/pdf')
 def compress_pdf():
@@ -77,4 +78,4 @@ def compress_pdf():
       
     return result
   except Exception as e:
-    return {'error': f'Error while compressing PDF - {e}'}, 500
+    return handle_server_error('Error while compressing PDF', e)
