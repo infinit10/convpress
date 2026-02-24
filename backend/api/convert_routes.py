@@ -1,7 +1,7 @@
 from flask import Blueprint, request, send_file, current_app
 import os
 
-from api import handle_server_error
+from api.util import handle_server_error
 from services import image_service
 from services import doc_service
 
