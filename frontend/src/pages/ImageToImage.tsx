@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FileDropzone } from '../components/FileDropZone';
 import { BackButton } from '../components/BackButton';
 import { PageContainer } from '../components/PageContainer';
+import { ShuffleIcon } from '../components/Icons';
 import { API_BASE } from '../config';
 
 const imageFormats = ['jpg', 'png'];
@@ -108,11 +109,11 @@ export const ImageToImage: React.FC = () => {
       </div>
 
       <button
-        className="mt-4"
+        className="mt-4 icon-button"
         onClick={handleUpload}
         disabled={isUploading}
       >
-        {isUploading ? 'Uploading...' : 'Convert'}
+        <ShuffleIcon size={16} /> {isUploading ? 'Uploading...' : 'Convert'}
       </button>
 
       {isUploading && (

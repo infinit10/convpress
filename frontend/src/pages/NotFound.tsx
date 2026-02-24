@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { ArrowLeftIcon, HomeIcon } from '../components/Icons';
 
 export function NotFound() {
   const navigate = useNavigate();
@@ -13,8 +14,8 @@ export function NotFound() {
         The page you're looking for doesn't exist or has been moved.
       </p>
       <div className="hstack" style={{ gap: 'var(--space-3)', marginTop: 'var(--space-4)' }}>
-        <button onClick={() => navigate(-1)} data-variant="secondary">Go Back</button>
-        <button onClick={() => navigate('/')}>Home</button>
+        <button className="icon-button" onClick={() => navigate(-1)} data-variant="secondary"><ArrowLeftIcon size={16} /> Go Back</button>
+        <button className="icon-button" onClick={() => navigate('/')}><HomeIcon size={16} /> Home</button>
       </div>
     </div>
   );

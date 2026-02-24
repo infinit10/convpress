@@ -4,6 +4,7 @@ import axios from 'axios';
 import { PageContainer } from '../components/PageContainer';
 import { FileDropzone } from '../components/FileDropZone';
 import { BackButton } from '../components/BackButton';
+import { ShuffleIcon } from '../components/Icons';
 import { API_BASE } from '../config';
 
 const imageFormats = ['jpg', 'png'];
@@ -92,11 +93,11 @@ export const PDFToImage: React.FC = () => {
       </div>
 
       <button
-        className="mt-4"
+        className="mt-4 icon-button"
         onClick={handleUpload}
         disabled={isUploading}
       >
-        {isUploading ? 'Uploading...' : 'Convert to Image'}
+        <ShuffleIcon size={16} /> {isUploading ? 'Uploading...' : 'Convert to Image'}
       </button>
 
       {isUploading && (

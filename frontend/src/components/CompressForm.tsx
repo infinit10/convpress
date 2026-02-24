@@ -4,6 +4,7 @@ import axios from "axios";
 import { FileDropzone } from "./FileDropZone";
 import { BackButton } from "./BackButton";
 import { PageContainer } from "./PageContainer";
+import { CompressIcon } from "./Icons";
 
 type CompressFormProps = {
   title: string;
@@ -119,11 +120,11 @@ export const CompressForm: React.FC<CompressFormProps> = ({
       </div>
 
       <button
-        className="mt-4"
+        className="mt-4 icon-button"
         onClick={handleCompress}
         disabled={isUploading}
       >
-        {isUploading ? "Compressing..." : "Compress"}
+        <CompressIcon size={16} /> {isUploading ? "Compressing..." : "Compress"}
       </button>
 
       {isUploading && (

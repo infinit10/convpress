@@ -9,8 +9,11 @@
 }
 
 :root {
+  --primary: light-dark(#2563eb, #60a5fa);
+  --primary-hover: light-dark(#1d4ed8, #3b82f6);
+  --accent-bg: light-dark(#eff6ff, #172554);
   --dropzone-bg: light-dark(#f4f4f5, #27272a);
   --dropzone-border: light-dark(#d4d4d8, #52525b);
-  --dropzone-hover-bg: light-dark(#e4e4e7, #323235);
+  --dropzone-hover-bg: light-dark(#eff6ff, #172554);
   --dropzone-border-hover: light-dark(var(--primary), var(--primary));
 }
