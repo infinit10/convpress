@@ -1,0 +1,24 @@
+name: Run Tests
+
+on:
+  push:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Python dependencies
+        shell: bash
+        run: make install-server-dependencies
+
+      - name: Run linting tests for frontend
+        shell: bash
+        run: make ts_lint
+
+      - name: Run linting tests for backend
+        shell: bash
+        run: make py_lint

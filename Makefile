@@ -4,24 +4,45 @@ help:
 	@echo ""
 	@echo "Usage: make [target]"
 	@echo ""
-	@echo "Available targets:"
-	@echo "  dev              Run Vite and Flask dev server"
-	@echo "  build            Build Docker image for production"
-	@echo "  build-and-deploy-web        Build frontend for production and deploy to Cloudflare Pages"
-	@echo "  clean            Remove Docker images"
-	@echo "  ts_lint          Run TypeScript linter"
-	@echo "  py_lint          Run Python linter"
-	@echo "  lint             Run both TypeScript and Python linters"
+	@echo "Development:"
+	@echo "  dev                       Run Vite and Flask dev server"
+	@echo ""
+	@echo "Build:"
+	@echo "  build-local               Build Docker image for local development"
+	@echo "  build-web                 Build frontend for production"
+	@echo ""
+	@echo "Deploy:"
+	@echo "  deploy-web                Deploy frontend to Cloudflare Pages"
+	@echo ""
+	@echo "Dependencies:"
+	@echo "  install-web-dependencies  Install frontend npm dependencies"
+	@echo ""
+	@echo "Linting:"
+	@echo "  ts_lint                   Run TypeScript linter"
+	@echo "  py_lint                   Run Python linter"
+	@echo "  lint                      Run all linters"
+	@echo ""
+	@echo "Cleanup:"
+	@echo "  clean                     Remove Docker images"
 	@echo ""
 
 dev:
 	bash scripts/start-dev.sh
 
-build:
+build-local:
 	docker compose build
 
-build-and-deploy-web:
-	cd frontend && npm run build && npm run deploy
+install-web-dependencies:
+	cd frontend && npm install
+
+install-server-dependencies:
+  cd backend && pip install -r requirements.txt
+
+build-web:
+	cd frontend && npm run build
+
+deploy-web:
+	cd frontend && npm run deploy
 
 clean:
 	docker image rm convpress-frontend:latest convpress-backend:latest || true
