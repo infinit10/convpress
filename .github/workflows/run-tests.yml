@@ -4,8 +4,28 @@ on:
   push:
 
 jobs:
-  test:
-    name: Run Tests
+  frontend-lint:
+    name: Lint TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.nvmrc
+
+      - name: Install NPM dependencies
+        shell: bash
+        run: make install-web-dependencies
+
+      - name: Run linter
+        shell: bash
+        run: make ts_lint
+
+  backend-lint:
+    name: Lint Python
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -15,10 +35,6 @@ jobs:
         shell: bash
         run: make install-server-dependencies
 
-      - name: Run linting tests for frontend
-        shell: bash
-        run: make ts_lint
-
-      - name: Run linting tests for backend
+      - name: Run linter
         shell: bash
         run: make py_lint
