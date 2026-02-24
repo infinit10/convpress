@@ -1,0 +1,32 @@
+name: Deploy Web App
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy Web App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.nvmrc
+
+      - name: Install NPM dependencies
+        shell: bash
+        run: make install-web-dependencies
+
+      - name: Build Web App
+        shell: bash
+        run: make build-web
+
+      - name: Deploy Web App
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: make deploy-web

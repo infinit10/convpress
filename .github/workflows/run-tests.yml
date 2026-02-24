@@ -1,0 +1,49 @@
+name: Run Tests
+
+on:
+  push:
+
+jobs:
+  frontend-lint:
+    name: Lint TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.nvmrc
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install NPM dependencies
+        shell: bash
+        run: make install-web-dependencies
+
+      - name: Run linter
+        shell: bash
+        run: make ts_lint
+
+  backend-lint:
+    name: Lint Python
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: backend/.python-version
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install Python dependencies
+        shell: bash
+        run: make install-server-dependencies
+
+      - name: Run linter
+        shell: bash
+        run: make py_lint
