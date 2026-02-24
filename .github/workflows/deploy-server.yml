@@ -14,8 +14,7 @@ jobs:
       - name: Install Flyctl
         uses: superfly/flyctl-actions/setup-flyctl@master
 
-      - name: Login to Fly
-        run: fly auth login --token ${{ secrets.FLY_API_TOKEN }}
-
-      - name: Build and Deploy Server
-        run: fly deploy
+      - name: Deploy Server
+        run: flyctl deploy
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
