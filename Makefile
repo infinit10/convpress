@@ -33,7 +33,7 @@ build-local:
 	docker compose build
 
 install-web-dependencies:
-	cd frontend && npm install
+	cd frontend && npm install --ci
 
 install-server-dependencies:
 	cd backend && pip install -r requirements.txt
