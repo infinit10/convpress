@@ -36,7 +36,7 @@ install-web-dependencies:
 	cd frontend && npm install
 
 install-server-dependencies:
-  cd backend && pip install -r requirements.txt
+	cd backend && pip install -r requirements.txt
 
 build-web:
 	cd frontend && npm run build
